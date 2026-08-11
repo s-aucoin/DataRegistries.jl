@@ -1,6 +1,6 @@
 module DataTrees
 
-export AuthorInfo, ProjectMetadata, Dataset, DatasetRegistry,
+export AuthorInfo, ProjectInfo, Dataset, DatasetRegistry,
        InitializeRegistry, SaveRegistry, LoadRegistry,
        AddDataset!, UpdateDataset!, UpdateOrCreateDataset!
 
@@ -8,8 +8,6 @@ export AuthorInfo, ProjectMetadata, Dataset, DatasetRegistry,
 using Parameters
 using TOML
 using Dates
-#using DrWatson
-
 
 include("Structures.jl")
 include("RegistryManagement.jl")

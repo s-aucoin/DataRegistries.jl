@@ -4,23 +4,16 @@
                          Authors::Dict{String, AuthorInfo} = authorlist,
                          Description::String = "")
 
-Create an empty DatasetRegistry object.
+Initialize a DatasetRegistry object with project metadata, but no datasets.
 """
-function InitializeRegistry(; Title::String = DrWatson.projectname(),
-                                ID::String,
-                                Authors::Dict{String, AuthorInfo} = authorlist,
-                                Description::String = "")
+function InitializeRegistry(; ID::T,
+                              Title::T = "Example Project",
+                              Authors::Dict{T, AuthorInfo} = Dict{String, AuthorInfo}("Author" => AuthorInfo(name="Author")),
+                              Description::T = "") where {T <: AbstractString}
 
-    info = ProjectMetadata(
-        Title,
-        Authors,
-        now(),
-        Description,
-        ID)
+    Info = ProjectInfo(; ID, Title, Authors, Description)
 
-    return DatasetRegistry(
-        info,
-        Dict{String, Dataset}())
+    return DatasetRegistry(; Info)
 end
 
 """
@@ -57,6 +50,7 @@ function AddDataset!(registry::DatasetRegistry, dataset::Dataset)
     registry.Datasets[dataset.ID] = dataset
 
     println("Dataset '$(dataset.ID)' added to registry.")
+    return nothing
 end
 
 
@@ -125,7 +119,8 @@ function UpdateDataset!(registry::DatasetRegistry, ID::String; kwargs...)
     # Update modification timestamp
     dataset.LastModified = now()
 
-println("Dataset '$(dataset.ID)' updated in the registry.")
+    println("Dataset '$(dataset.ID)' updated in the registry.")
+    return nothing
 end
 
 
@@ -150,4 +145,5 @@ function UpdateOrCreateDataset!(registry::DatasetRegistry, ID::String; kwargs...
         dataset = Dataset(ID; kwargs...)
         AddDataset!(registry, dataset)
     end
+    return nothing
 end

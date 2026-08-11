@@ -3,17 +3,14 @@
 
 Save a DatasetRegistry object to a TOML file.
 """
-function SaveRegistry(registry::DatasetRegistry; path::String=DrWatson.projectdir("Data.toml"))
+function SaveRegistry(registry::DatasetRegistry; path::AbstractString="DataRegistry.toml")
 
-    # Convert registry object to TOML-compatible Dict
-    registry_dict = ConvertToTOML(registry)
-
-    # Write to file
     open(path, "w") do io
-        TOML.print(io, registry_dict)
+        TOML.print(io, to_toml(registry))
     end
 
     println("Registry saved to $path")
+    return nothing
 end
 
 
@@ -22,10 +19,9 @@ end
 
 Load a DatasetRegistry from a TOML file.
 """
-function LoadRegistry(filename::String)
+function LoadRegistry(filename::AbstractString)
 
     toml = TOML.parsefile(filename)
 
     return ConvertFromTOML(DatasetRegistry, toml)
-
 end

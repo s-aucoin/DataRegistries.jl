@@ -1,32 +1,21 @@
-"""
-    ConvertToTOML(x)
-
-Convert a Julia object into a format suitable for TOML serialization. This function recursively converts structs, dictionaries, and arrays into dictionaries and arrays of basic types (strings, numbers, etc.) that can be serialized to TOML.
-"""
-function ConvertToTOML(x)
-
-    if x isa DateTime
-        return string(x)
-
-    elseif x isa String || x isa Number || x isa Bool
-        return x
-
-    elseif x === nothing
-        return "NULL"
-
-    elseif x isa Dict
-        return Dict(string(k) => ConvertToTOML(v) for (k,v) in x)
-
-    elseif x isa AbstractVector
-        return [ConvertToTOML(v) for v in x]
-
-    elseif isstructtype(typeof(x))
-        return Dict(string(field) => ConvertToTOML(getfield(x, field)) for field in fieldnames(typeof(x)))
-
-    else
-        return x
-    end
+## Functions to convert the defined types to TOML-compatible formats ##
+function to_toml(x::Union{TreeTypes, AbstractDict})
+    return Dict{TOMLTypes, TOMLTypes}(to_toml(k) => to_toml(x[k]) for k in keys(x))
 end
+
+function to_toml(x::Symbol)
+    return String(x)
+end
+
+function to_toml(x::AbstractVector)
+    return to_toml.(x)
+end
+
+function to_toml(x::Union{AbstractString, Integer, AbstractFloat, Bool, Dates.DateTime, Dates.Time, Dates.Date}) # TOMLTypes except for Dict and Vector
+    return x
+end
+
+
 
 
 """
