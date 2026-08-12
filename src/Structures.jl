@@ -16,18 +16,18 @@ const TOMLTypes = Union{
 
 ### AUTHOR INFORMATION ###
 @with_kw struct AuthorInfo @deftype AbstractString
-    name
-    email = ""
-    affiliation = ""
-    github = ""
+    Name
+    Email = ""
+    Affiliation = ""
+    Github = ""
     ORCID = ""
 end
 
 authorlist = Dict{AbstractString, AuthorInfo}(
-"Sam Aucoin" => AuthorInfo(name="Sam Aucoin",
-                           email="sam.aucoin@dal.ca",
-                           affiliation="Department of Oceanography, Dalhousie University",
-                           github="https://github.com/s-aucoin",
+"Sam Aucoin" => AuthorInfo(Name="Sam Aucoin",
+                           Email="sam.aucoin@dal.ca",
+                           Affiliation="Department of Oceanography, Dalhousie University",
+                           Github="https://github.com/s-aucoin",
                            ORCID="https://orcid.org/0009-0009-6772-3418")
 )
 
@@ -35,7 +35,7 @@ authorlist = Dict{AbstractString, AuthorInfo}(
 @with_kw struct ProjectInfo @deftype AbstractString
     ID                                   # Unique identifier for the project
     Title = "Example Project"            # Title of the project
-    Authors::Dict{AbstractString, AuthorInfo} = Dict{AbstractString, AuthorInfo}("Author" => AuthorInfo(name="Author")) # The contributing authors to the project
+    Authors::Dict{AbstractString, AuthorInfo} = Dict{AbstractString, AuthorInfo}("Author" => AuthorInfo(Name="Author")) # The contributing authors to the project
     Initialized::DateTime = now()        # When the project was initialized (in UTC)
     Description = ""                     # A description of the project
 end
@@ -47,7 +47,7 @@ end
     SourcePath = ""                                 # Relative path to the script that generated the dataset
     Description = ""                                # A description of the dataset
 
-    Authors::Dict{AbstractString, AuthorInfo} = Dict{AbstractString, AuthorInfo}("Author" => AuthorInfo(name="Author")) # The contributing authors to this dataset
+    Authors::Dict{AbstractString, AuthorInfo} = Dict{AbstractString, AuthorInfo}("Author" => AuthorInfo(Name="Author")) # The contributing authors to this dataset
 
     ProcessingLevel = "raw"                         # Processing level of the dataset (e.g. raw, L0, L1, L2)
 
@@ -106,26 +106,35 @@ end
 
 
 ## Extend Base functions to work with the defined types ##
+
+# AuthorInfo #
 Base.getindex(x::AuthorInfo, s::Symbol) = getfield(x, s)
 Base.keys(p::AuthorInfo) = propertynames(p)
 @auto_equals AuthorInfo
 Base.length(x::AuthorInfo) = 1
 @make_iterable AuthorInfo
+Base.values(x::AuthorInfo) = getfield.(Ref(x), fieldnames(AuthorInfo))
 
+# ProjectInfo #
 Base.getindex(x::ProjectInfo, s::Symbol) = getfield(x, s)
 Base.keys(p::ProjectInfo) = propertynames(p)
 @auto_equals ProjectInfo
 Base.length(x::ProjectInfo) = 1
 @make_iterable ProjectInfo
+Base.values(x::ProjectInfo) = getfield.(Ref(x), fieldnames(ProjectInfo))
 
+# Dataset #
 Base.getindex(x::Dataset, s::Symbol) = getfield(x, s)
 Base.keys(p::Dataset) = propertynames(p)
 @auto_equals Dataset
 Base.length(x::Dataset) = 1
 @make_iterable Dataset
+Base.values(x::Dataset) = getfield.(Ref(x), fieldnames(Dataset))
 
+# DataRegistry #
 Base.getindex(x::DataRegistry, s::Symbol) = getfield(x, s)
 Base.keys(p::DataRegistry) = propertynames(p)
 @auto_equals DataRegistry
 Base.length(x::DataRegistry) = length(x.Datasets)
 @make_iterable DataRegistry
+Base.values(x::DataRegistry) = getfield.(Ref(x), fieldnames(DataRegistry))

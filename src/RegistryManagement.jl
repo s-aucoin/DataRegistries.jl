@@ -8,7 +8,7 @@ Initialize a DataRegistry object with project metadata, but no datasets.
 """
 function InitializeRegistry(; ID::T,
                               Title::T = "Example Project",
-                              Authors::Dict{T, AuthorInfo} = Dict{String, AuthorInfo}("Author" => AuthorInfo(name="Author")),
+                              Authors::Dict{T, AuthorInfo} = Dict{String, AuthorInfo}("Author" => AuthorInfo(Name="Author")),
                               Description::T = "") where {T <: AbstractString}
 
     Info = ProjectInfo(; ID, Title, Authors, Description)
