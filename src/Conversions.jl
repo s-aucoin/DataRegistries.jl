@@ -1,5 +1,10 @@
 ## Functions to convert the defined types to TOML-compatible formats ##
-function to_toml(x::Union{TreeTypes, AbstractDict})
+"""
+    to_toml(x::Union{RegistryTypes, AbstractDict})
+
+Convert RegistryTypes.
+"""
+function to_toml(x::Union{RegistryTypes, AbstractDict})
     return Dict{TOMLTypes, TOMLTypes}(to_toml(k) => to_toml(x[k]) for k in keys(x))
 end
 

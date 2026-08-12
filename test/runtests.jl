@@ -1,4 +1,4 @@
-using DataTrees
+using DataRegistries
 using Test
 
 @testset "AuthorInfo" begin

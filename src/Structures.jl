@@ -1,4 +1,4 @@
-## These are the basic structures that the DataTrees package is built on. ##
+## These are the basic structures that the DataRegistries package is built on. ##
 
 ### AUTHOR INFORMATION ###
 @with_kw struct AuthorInfo @deftype AbstractString
@@ -60,14 +60,14 @@ const TOMLTypes = Union{
 end
 
 
-@with_kw mutable struct DatasetRegistry
+@with_kw mutable struct DataRegistry
     Info::ProjectInfo                                       # The overall metadata for the project
     Datasets::Dict{AbstractString,Dataset} = Dict{AbstractString,Dataset}() # A map of dataset IDs to Dataset objects
 end
 
 
 ## A collection of the defined types #
-TreeTypes = Union{AuthorInfo, ProjectInfo, Dataset, DatasetRegistry}
+RegistryTypes = Union{AuthorInfo, ProjectInfo, DataRegistry}
 
 
 ## Extend Base.getindex and Base.keys to work with the defined types ##
@@ -80,5 +80,5 @@ Base.keys(p::ProjectInfo) = propertynames(p)
 Base.getindex(x::Dataset, s::Symbol) = getfield(x, s)
 Base.keys(p::Dataset) = propertynames(p)
 
-Base.getindex(x::DatasetRegistry, s::Symbol) = getfield(x, s)
-Base.keys(p::DatasetRegistry) = propertynames(p)
+Base.getindex(x::DataRegistry, s::Symbol) = getfield(x, s)
+Base.keys(p::DataRegistry) = propertynames(p)

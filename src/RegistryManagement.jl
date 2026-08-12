@@ -4,7 +4,7 @@
                          Authors::Dict{String, AuthorInfo} = authorlist,
                          Description::String = "")
 
-Initialize a DatasetRegistry object with project metadata, but no datasets.
+Initialize a DataRegistry object with project metadata, but no datasets.
 """
 function InitializeRegistry(; ID::T,
                               Title::T = "Example Project",
@@ -13,13 +13,13 @@ function InitializeRegistry(; ID::T,
 
     Info = ProjectInfo(; ID, Title, Authors, Description)
 
-    return DatasetRegistry(; Info)
+    return DataRegistry(; Info)
 end
 
 """
     AddDataset!(registry, dataset)
 
-Add a Dataset to a DatasetRegistry.
+Add a Dataset to a DataRegistry.
 
 Checks:
 - Dataset ID does not already exist
@@ -29,7 +29,7 @@ Updates:
 - Adds dataset to `registry.Datasets`
 - Sets the registration timestamp
 """
-function AddDataset!(registry::DatasetRegistry, dataset::Dataset)
+function AddDataset!(registry::DataRegistry, dataset::Dataset)
 
     # Check that ID is unique
     if haskey(registry.Datasets, dataset.ID)
@@ -57,7 +57,7 @@ end
 """
     UpdateDataset!(registry, ID; kwargs...)
 
-Update fields of an existing Dataset in a DatasetRegistry.
+Update fields of an existing Dataset in a DataRegistry.
 
 Only fields provided as keyword arguments are modified.
 The dataset's LastModified timestamp is updated automatically.
@@ -70,7 +70,7 @@ Example:
         Description="Updated description"
     )
 """
-function UpdateDataset!(registry::DatasetRegistry, ID::String; kwargs...)
+function UpdateDataset!(registry::DataRegistry, ID::String; kwargs...)
 
     # Check that dataset exists
     if !haskey(registry.Datasets, ID)
@@ -128,14 +128,14 @@ end
 """
     UpdateOrCreateDataset!(registry, ID; kwargs...)
 
-Update an existing Dataset in a DatasetRegistry, or create a new Dataset if
+Update an existing Dataset in a DataRegistry, or create a new Dataset if
 it does not exist.
 
 If the dataset already exists, only the supplied fields are modified.
 If it does not exist, a new Dataset is created using the supplied fields
 and default values for unspecified fields.
 """
-function UpdateOrCreateDataset!(registry::DatasetRegistry, ID::String; kwargs...)
+function UpdateOrCreateDataset!(registry::DataRegistry, ID::String; kwargs...)
 
     if haskey(registry.Datasets, ID)
         println("Dataset '$(ID)' already exists, updating...")

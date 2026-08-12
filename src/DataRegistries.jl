@@ -1,6 +1,6 @@
-module DataTrees
+module DataRegistries
 
-export AuthorInfo, ProjectInfo, Dataset, DatasetRegistry,
+export AuthorInfo, ProjectInfo, Dataset, DataRegistry,
        InitializeRegistry, SaveRegistry, LoadRegistry,
        AddDataset!, UpdateDataset!, UpdateOrCreateDataset!
 
