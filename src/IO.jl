@@ -1,9 +1,9 @@
 """
     SaveRegistry(registry, filename)
 
-Save a DatasetRegistry object to a TOML file.
+Save a DataRegistry object to a TOML file.
 """
-function SaveRegistry(registry::DatasetRegistry; path::AbstractString="DataRegistry.toml")
+function SaveRegistry(registry::DataRegistry; path::AbstractString="DataRegistry.toml")
 
     open(path, "w") do io
         TOML.print(io, to_toml(registry))
@@ -17,11 +17,11 @@ end
 """
     LoadRegistry(filename)
 
-Load a DatasetRegistry from a TOML file.
+Load a DataRegistry from a TOML file.
 """
 function LoadRegistry(filename::AbstractString)
 
     toml = TOML.parsefile(filename)
 
-    return ConvertFromTOML(DatasetRegistry, toml)
+    return from_toml(DataRegistry, toml)
 end

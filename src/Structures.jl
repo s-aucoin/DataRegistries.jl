@@ -1,5 +1,19 @@
 ## These are the basic structures that the DataRegistries package is built on. ##
 
+### Acceptable types for converting to TOML ###
+const TOMLTypes = Union{
+    AbstractDict,
+    AbstractVector,
+    AbstractString,
+    Integer,
+    AbstractFloat,
+    Bool,
+    Dates.DateTime,
+    Dates.Time,
+    Dates.Date
+}
+
+
 ### AUTHOR INFORMATION ###
 @with_kw struct AuthorInfo @deftype AbstractString
     name
@@ -25,20 +39,6 @@ authorlist = Dict{AbstractString, AuthorInfo}(
     Initialized::DateTime = now()        # When the project was initialized (in UTC)
     Description = ""                     # A description of the project
 end
-
-
-### Acceptable types for converting to TOML ###
-const TOMLTypes = Union{
-    AbstractDict,
-    AbstractVector,
-    AbstractString,
-    Integer,
-    AbstractFloat,
-    Bool,
-    Dates.DateTime,
-    Dates.Time,
-    Dates.Date
-}
 
 @with_kw mutable struct Dataset @deftype AbstractString
     ID                                              # Unique identifier for the dataset
@@ -67,18 +67,65 @@ end
 
 
 ## A collection of the defined types #
-RegistryTypes = Union{AuthorInfo, ProjectInfo, DataRegistry}
+RegistryTypes = Union{AuthorInfo, ProjectInfo, Dataset, DataRegistry}
 
 
-## Extend Base.getindex and Base.keys to work with the defined types ##
+
+## Macro to define equality for the defined types ##
+macro auto_equals(type_name)
+    return esc(quote
+        function Base.:(==)(a::$type_name, b::$type_name)
+            return all(f -> getfield(a, f) == getfield(b, f), fieldnames($type_name))
+        end
+
+        function Base.hash(a::$type_name, h::UInt)
+            for f in fieldnames($type_name)
+                h = hash(getfield(a, f), h)
+            end
+            return h
+        end
+    end)
+end
+
+## Macro to define iterate for the defined types ##
+macro make_iterable(type_name)
+    return esc(quote
+        # Define starting iteration
+        Base.iterate(x::$type_name) = Base.iterate(x, 1)
+        
+        # Define subsequent iteration steps
+        function Base.iterate(x::$type_name, state::Int)
+            if state > fieldcount($type_name)
+                return nothing
+            else
+                return (getfield(x, state), state + 1)
+            end
+        end
+    end)
+end
+
+
+## Extend Base functions to work with the defined types ##
 Base.getindex(x::AuthorInfo, s::Symbol) = getfield(x, s)
 Base.keys(p::AuthorInfo) = propertynames(p)
+@auto_equals AuthorInfo
+Base.length(x::AuthorInfo) = 1
+@make_iterable AuthorInfo
 
 Base.getindex(x::ProjectInfo, s::Symbol) = getfield(x, s)
 Base.keys(p::ProjectInfo) = propertynames(p)
+@auto_equals ProjectInfo
+Base.length(x::ProjectInfo) = 1
+@make_iterable ProjectInfo
 
 Base.getindex(x::Dataset, s::Symbol) = getfield(x, s)
 Base.keys(p::Dataset) = propertynames(p)
+@auto_equals Dataset
+Base.length(x::Dataset) = 1
+@make_iterable Dataset
 
 Base.getindex(x::DataRegistry, s::Symbol) = getfield(x, s)
 Base.keys(p::DataRegistry) = propertynames(p)
+@auto_equals DataRegistry
+Base.length(x::DataRegistry) = length(x.Datasets)
+@make_iterable DataRegistry

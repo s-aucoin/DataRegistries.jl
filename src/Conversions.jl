@@ -2,20 +2,35 @@
 """
     to_toml(x::Union{RegistryTypes, AbstractDict})
 
-Convert RegistryTypes.
+Convert `RegistryTypes` and `AbstractDict` to a `Dict` of TOML-compatible formats.
 """
 function to_toml(x::Union{RegistryTypes, AbstractDict})
     return Dict{TOMLTypes, TOMLTypes}(to_toml(k) => to_toml(x[k]) for k in keys(x))
 end
 
+"""
+    to_toml(x::Symbol)
+
+Convert `Symbol` to TOML-compatible `String`.
+"""
 function to_toml(x::Symbol)
     return String(x)
 end
 
+"""
+    to_toml(x::AbstractVector)
+
+Convert each element of an `AbstractVector` to TOML-compatible formats.
+"""
 function to_toml(x::AbstractVector)
     return to_toml.(x)
 end
 
+"""
+    to_toml(x::Union{AbstractString, Integer, AbstractFloat, Bool, Dates.DateTime, Dates.Time, Dates.Date})
+
+Allow every TOML-compatible format except `AbstractDict` and `AbstractVector` to pass unchanged.
+"""
 function to_toml(x::Union{AbstractString, Integer, AbstractFloat, Bool, Dates.DateTime, Dates.Time, Dates.Date}) # TOMLTypes except for Dict and Vector
     return x
 end
@@ -24,38 +39,46 @@ end
 
 
 """
-    ConvertFromTOML(T, x)
+    from_toml(::Type{T}, x::AbstractDict) where T <: RegistryTypes
 
-Convert TOML-compatible data back into a Julia object of type `T`.
+Convert TOML-formatted `RegistryTypes` from an `AbstractDict` to the appropriate type.
 """
-function ConvertFromTOML(::Type{T}, x) where T
+function from_toml(::Type{T}, x::AbstractDict) where T <: RegistryTypes
+    T((from_toml(fieldtype(T, i), x[string(fieldnames(T)[i])]) for i in 1:fieldcount(T))...)
+end
 
-    if T <: DateTime
-        return DateTime(x)
+"""
+    from_toml(::Type{Symbol}, x::AbstractString)
 
-    elseif T <: Symbol
-        return Symbol(x)
+Convert `String` to `Symbol`.
+"""
+function from_toml(::Type{Symbol}, x::AbstractString)
+    return Symbol(x)
+end
 
-    elseif T <: String || T <: Number || T <: Bool
-        return convert(T, x)
+"""
+    from_toml(::Type{Vector{T}}, x::AbstractVector) where T
 
-    elseif T <: Dict
-        K = keytype(T)
-        V = valtype(T)
+Convert each element of a TOML-formatted `AbstractVector` to the appropriate type.
+"""
+function from_toml(::Type{Vector{T}}, x::AbstractVector) where T
+    from_toml.(Ref(T), x)
+end
 
-        return Dict(convert(K, k) => ConvertFromTOML(V, v) for (k, v) in x)
+"""
+    from_toml(::Type{Dict{K,V}}, x::AbstractDict) where {K,V}
 
-    elseif T <: AbstractVector
-        V = eltype(T)
+Convert each key-value pair of a TOML-formated `AbstractDict` to the appropriate types.
+"""
+function from_toml(::Type{Dict{K,V}}, x::AbstractDict) where {K,V}
+    Dict(from_toml(K, k) => from_toml(V, v) for (k, v) in x)
+end
 
-        return [ConvertFromTOML(V, v) for v in x]
+"""
+    from_toml(::Type{T}, x::T) where T <: Union{AbstractString, Integer, AbstractFloat, Bool, Dates.DateTime, Dates.Time, Dates.Date}
 
-    elseif isstructtype(T)
-        values = (ConvertFromTOML(fieldtype(T, i), x[string(fieldname(T, i))]) for i in 1:fieldcount(T))
-
-        return T(values...)
-
-    else
-        return convert(T, x)
-    end
+Allow every TOML-compatible format except `AbstractDict` and `AbstractVector` to pass unchanged.
+"""
+function from_toml(::Type{T}, x::T) where T <: Union{AbstractString, Integer, AbstractFloat, Bool, Dates.DateTime, Dates.Time, Dates.Date}
+    return x
 end
