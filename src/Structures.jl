@@ -23,7 +23,7 @@ const TOMLTypes = Union{
     ORCID = ""
 end
 
-authorlist = Dict{AbstractString, AuthorInfo}(
+authorlist = Dict{String, AuthorInfo}(
 "Sam Aucoin" => AuthorInfo(Name="Sam Aucoin",
                            Email="sam.aucoin@dal.ca",
                            Affiliation="Department of Oceanography, Dalhousie University",
@@ -35,7 +35,7 @@ authorlist = Dict{AbstractString, AuthorInfo}(
 @with_kw struct ProjectInfo @deftype AbstractString
     ID                                   # Unique identifier for the project
     Title = "Example Project"            # Title of the project
-    Authors::Dict{AbstractString, AuthorInfo} = Dict{AbstractString, AuthorInfo}("Author" => AuthorInfo(Name="Author")) # The contributing authors to the project
+    Authors::Dict{String,AuthorInfo} = Dict("Author" => AuthorInfo(Name="Author")) # The contributing authors to the project
     Initialized::DateTime = now()        # When the project was initialized (in UTC)
     Description = ""                     # A description of the project
 end
@@ -47,22 +47,22 @@ end
     SourcePath = ""                                 # Relative path to the script that generated the dataset
     Description = ""                                # A description of the dataset
 
-    Authors::Dict{AbstractString, AuthorInfo} = Dict{AbstractString, AuthorInfo}("Author" => AuthorInfo(Name="Author")) # The contributing authors to this dataset
+    Authors::Dict{String, AuthorInfo} = Dict("Author" => AuthorInfo(Name="Author")) # The contributing authors to this dataset
 
     ProcessingLevel = "raw"                         # Processing level of the dataset (e.g. raw, L0, L1, L2)
 
-    Parents::Vector{AbstractString} = AbstractString[]              # List of parent dataset IDs (if any)
+    Parents::Vector{String} = String[]              # List of parent dataset IDs (if any)
 
     Registered::DateTime = now()                    # The date and time when the dataset was added to the registry (in UTC)
     LastModified::DateTime = now()                  # The last date and time the dataset was modified (in UTC)
 
-    Metadata::Dict{AbstractString, Union{TOMLTypes, AuthorInfo, ProjectInfo}} = Dict{AbstractString, Union{TOMLTypes, AuthorInfo, ProjectInfo}}() # Any other arbitrary metadata associated with the dataset
+    Metadata::Dict{AbstractString, Union{TOMLTypes, AuthorInfo, ProjectInfo}} = Dict{String, Union{TOMLTypes, AuthorInfo, ProjectInfo}}() # Any other arbitrary metadata associated with the dataset
 end
 
 
 @with_kw mutable struct DataRegistry
     Info::ProjectInfo                                       # The overall metadata for the project
-    Datasets::Dict{AbstractString,Dataset} = Dict{AbstractString,Dataset}() # A map of dataset IDs to Dataset objects
+    Datasets::Dict{String, Dataset} = Dict{String, Dataset}() # A map of dataset IDs to Dataset objects
 end
 
 
@@ -114,6 +114,14 @@ Base.keys(p::AuthorInfo) = propertynames(p)
 Base.length(x::AuthorInfo) = 1
 @make_iterable AuthorInfo
 Base.values(x::AuthorInfo) = getfield.(Ref(x), fieldnames(AuthorInfo))
+Base.keytype(::Type{AuthorInfo}) = Symbol
+Base.keytype(x::AuthorInfo) = Symbol
+Base.valtype(::Type{AuthorInfo}) = Union{fieldtypes(AuthorInfo)...}
+
+# define a new function to get the actual concrete type of a property #
+propertytype(x::AuthorInfo, field::Symbol) = typeof(getfield(x, field))
+propertytype(x::AuthorInfo) = Union{(propertytype(x, field) for field in fieldnames(AuthorInfo))...}
+
 
 # ProjectInfo #
 Base.getindex(x::ProjectInfo, s::Symbol) = getfield(x, s)
@@ -122,6 +130,14 @@ Base.keys(p::ProjectInfo) = propertynames(p)
 Base.length(x::ProjectInfo) = 1
 @make_iterable ProjectInfo
 Base.values(x::ProjectInfo) = getfield.(Ref(x), fieldnames(ProjectInfo))
+Base.keytype(::Type{ProjectInfo}) = Symbol
+Base.keytype(x::ProjectInfo) = Symbol
+Base.valtype(::Type{ProjectInfo}) = Union{fieldtypes(ProjectInfo)...}
+
+# define a new function to get the actual concrete type of a property #
+propertytype(x::ProjectInfo, field::Symbol) = typeof(getfield(x, field))
+propertytype(x::ProjectInfo) = Union{(propertytype(x, field) for field in fieldnames(ProjectInfo))...}
+
 
 # Dataset #
 Base.getindex(x::Dataset, s::Symbol) = getfield(x, s)
@@ -130,6 +146,14 @@ Base.keys(p::Dataset) = propertynames(p)
 Base.length(x::Dataset) = 1
 @make_iterable Dataset
 Base.values(x::Dataset) = getfield.(Ref(x), fieldnames(Dataset))
+Base.keytype(::Type{Dataset}) = Symbol
+Base.keytype(x::Dataset) = Symbol
+Base.valtype(::Type{Dataset}) = Union{fieldtypes(Dataset)...}
+
+# define a new function to get the actual concrete type of a property #
+propertytype(x::Dataset, field::Symbol) = typeof(getfield(x, field))
+propertytype(x::Dataset) = Union{(propertytype(x, field) for field in fieldnames(Dataset))...}
+
 
 # DataRegistry #
 Base.getindex(x::DataRegistry, s::Symbol) = getfield(x, s)
@@ -138,3 +162,15 @@ Base.keys(p::DataRegistry) = propertynames(p)
 Base.length(x::DataRegistry) = length(x.Datasets)
 @make_iterable DataRegistry
 Base.values(x::DataRegistry) = getfield.(Ref(x), fieldnames(DataRegistry))
+Base.keytype(::Type{DataRegistry}) = Symbol
+Base.keytype(x::DataRegistry) = Symbol
+Base.valtype(::Type{DataRegistry}) = Union{fieldtypes(DataRegistry)...}
+
+# define a new function to get the actual concrete type of a property #
+propertytype(x::DataRegistry, field::Symbol) = typeof(getfield(x, field))
+propertytype(x::DataRegistry) = Union{(propertytype(x, field) for field in fieldnames(DataRegistry))...}
+
+
+# define a new function to get the actual concrete type of a property for an AbstractDict too #
+propertytype(x::AbstractDict, field::Any) = typeof(get(x, field, nothing))
+propertytype(x::AbstractDict) = Union{(propertytype(x, field) for field in keys(x))...}

@@ -5,7 +5,9 @@
 Convert `RegistryTypes` and `AbstractDict` to a `Dict` of TOML-compatible formats.
 """
 function to_toml(x::Union{RegistryTypes, AbstractDict})
-    return Dict{TOMLTypes, TOMLTypes}(to_toml(k) => to_toml(x[k]) for k in keys(x))
+    #return Dict{keytype(x), propertytype(x)}(to_toml(k) => to_toml(x[k]) for k in keys(x))
+    return Dict(to_toml(k) => to_toml(x[k]) for k in keys(x))
+    #return Dict{TOMLTypes, TOMLTypes}(to_toml(k) => to_toml(x[k]) for k in keys(x))
 end
 
 """

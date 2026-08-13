@@ -1,6 +1,7 @@
 module DataRegistries
 
 export AuthorInfo, ProjectInfo, Dataset, DataRegistry,
+       propertytype,
        InitializeRegistry, SaveRegistry, LoadRegistry,
        AddDataset!, UpdateDataset!, UpdateOrCreateDataset!
 

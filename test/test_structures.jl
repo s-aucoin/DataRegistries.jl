@@ -22,6 +22,15 @@
     @test_throws MethodError AuthorInfo(Name="Example Author", Affiliation=123)
     @test_throws MethodError AuthorInfo(Name="Example Author", Github=123)
     @test_throws MethodError AuthorInfo(Name="Example Author", ORCID=123)
+
+    # test the propertytype function #
+    @test propertytype(author, :Name) == String
+    @test propertytype(author) == String
+
+    author = AuthorInfo(Name="Example Author", Email=SubString("test"), Affiliation=SubstitutionString("test"))
+    @test propertytype(author, :Email) == SubString{String}
+    @test propertytype(author, :Affiliation) == SubstitutionString{String}
+    @test propertytype(author) == Union{String, SubString{String}, SubstitutionString{String}}
 end
 
 
@@ -48,6 +57,12 @@ end
     @test_throws MethodError ProjectInfo(ID="Example Author", Authors=123)
     @test_throws MethodError ProjectInfo(ID="Example Author", Initialized=123)
     @test_throws MethodError ProjectInfo(ID="Example Author", Description=123)
+
+    # test the propertytype function #
+    @test propertytype(project_info, :ID) == String
+    @test propertytype(project_info, :Authors) == Dict{String, AuthorInfo}
+    @test propertytype(project_info, :Initialized) == DateTime
+    @test propertytype(project_info) == Union{String, Dict{String, AuthorInfo}, DateTime}
 end
 
 
@@ -104,6 +119,13 @@ end
     @test_throws MethodError Dataset(ID="Example Dataset", Registered=123)
     @test_throws MethodError Dataset(ID="Example Dataset", LastModified=123)
     @test_throws MethodError Dataset(ID="Example Dataset", Metadata=123)
+
+    # test the propertytype function #
+    @test propertytype(dataset, :ID) == String
+    @test propertytype(dataset, :Authors) == Dict{String, AuthorInfo}
+    @test propertytype(dataset, :Registered) == DateTime
+    @test propertytype(dataset, :Parents) == Vector{String}
+    @test propertytype(dataset) == Union{String, Dict{String, AuthorInfo}, DateTime, Vector{String}, Dict{AbstractString, Union{DataRegistries.TOMLTypes, AuthorInfo, ProjectInfo}}}
 end
 
 
@@ -124,4 +146,21 @@ end
     # test type contraints #
     @test_throws MethodError DataRegistry(Info=123)
     @test_throws MethodError DataRegistry(Info=project_info, Datasets=123)
+
+    # test the propertytype function #
+    @test propertytype(data_registry, :Info) == ProjectInfo
+    @test propertytype(data_registry, :Datasets) == Dict{String, Dataset}
+    @test propertytype(data_registry) == Union{ProjectInfo, Dict{String, Dataset}}
+end
+
+@testset "Dict Extensions" begin
+    dict = Dict("k1"=>"v1", :k2=>"v2", 3=>"v3", 4.0=>"v4", "k5"=>5, "k6"=>6.0)
+    # test the propertytype function #
+    @test propertytype(dict, "k1") == String
+    @test propertytype(dict, :k2) == String
+    @test propertytype(dict, 3) == String
+    @test propertytype(dict, 4.0) == String
+    @test propertytype(dict, "k5") == Int
+    @test propertytype(dict, "k6") == Float64
+    @test propertytype(dict) == Union{String, Int, Float64}
 end
