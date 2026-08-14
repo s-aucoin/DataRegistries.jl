@@ -67,7 +67,7 @@ end
 
 
 ## A collection of the defined types #
-RegistryTypes = Union{AuthorInfo, ProjectInfo, Dataset, DataRegistry}
+const RegistryTypes = Union{AuthorInfo, ProjectInfo, Dataset, DataRegistry}
 
 
 

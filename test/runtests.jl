@@ -7,4 +7,5 @@ using Dates
     include("test_base_overloads.jl")
     include("test_conversions.jl")
     include("test_registrymanagement.jl")
+    include("test_IO.jl")
 end
