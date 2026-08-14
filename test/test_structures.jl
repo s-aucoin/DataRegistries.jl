@@ -82,7 +82,7 @@ end
     @test dataset.Metadata == Dict{AbstractString, Union{DataRegistries.TOMLTypes, AuthorInfo, ProjectInfo}}()
 
     # test custom values #
-    custom_metadata = Dict{AbstractString, Union{DataRegistries.TOMLTypes, AuthorInfo, ProjectInfo}}("test_key"=>"test_value", "test_key2"=>AuthorInfo(Name="Test Author"), "test_key3"=>ProjectInfo(ID="test_project"), "test_key4"=>123)
+    custom_metadata = Dict{AbstractString, DataRegistries.TOMLTypes}("test_key"=>"test_value", "test_key4"=>123)
     dataset = Dataset(ID="example_dataset", 
                         Title="Custom Dataset", 
                         DataPath="example.jl", 
@@ -125,7 +125,7 @@ end
     @test propertytype(dataset, :Authors) == Dict{String, AuthorInfo}
     @test propertytype(dataset, :Registered) == DateTime
     @test propertytype(dataset, :Parents) == Vector{String}
-    @test propertytype(dataset) == Union{String, Dict{String, AuthorInfo}, DateTime, Vector{String}, Dict{AbstractString, Union{DataRegistries.TOMLTypes, AuthorInfo, ProjectInfo}}}
+    @test propertytype(dataset) == Union{String, Dict{String, AuthorInfo}, DateTime, Vector{String}, Dict{AbstractString, Any}}
 end
 
 

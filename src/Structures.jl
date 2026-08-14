@@ -56,7 +56,7 @@ end
     Registered::DateTime = now()                    # The date and time when the dataset was added to the registry (in UTC)
     LastModified::DateTime = now()                  # The last date and time the dataset was modified (in UTC)
 
-    Metadata::Dict{AbstractString, Union{TOMLTypes, AuthorInfo, ProjectInfo}} = Dict{String, Union{TOMLTypes, AuthorInfo, ProjectInfo}}() # Any other arbitrary metadata associated with the dataset
+    Metadata::Dict{AbstractString, Any} = Dict{String, TOMLTypes}() # Any other arbitrary metadata associated with the dataset except RegistryTypes (maybe in the future)
 end
 
 

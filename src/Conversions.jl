@@ -5,9 +5,7 @@
 Convert `RegistryTypes` and `AbstractDict` to a `Dict` of TOML-compatible formats.
 """
 function to_toml(x::Union{RegistryTypes, AbstractDict})
-    #return Dict{keytype(x), propertytype(x)}(to_toml(k) => to_toml(x[k]) for k in keys(x))
     return Dict(to_toml(k) => to_toml(x[k]) for k in keys(x))
-    #return Dict{TOMLTypes, TOMLTypes}(to_toml(k) => to_toml(x[k]) for k in keys(x))
 end
 
 """
@@ -72,8 +70,8 @@ end
 
 Convert each key-value pair of a TOML-formated `AbstractDict` to the appropriate types.
 """
-function from_toml(::Type{Dict{K,V}}, x::AbstractDict) where {K,V}
-    Dict(from_toml(K, k) => from_toml(V, v) for (k, v) in x)
+function from_toml(::Type{D}, x::AbstractDict) where {K, V, D<:AbstractDict{K,V}} #(::Type{Dict{K,V}}, x::AbstractDict) where {K,V}
+    D(from_toml(K, k) => from_toml(V, v) for (k, v) in x)
 end
 
 """
@@ -83,4 +81,13 @@ Allow every TOML-compatible format except `AbstractDict` and `AbstractVector` to
 """
 function from_toml(::Type{T}, x::T) where T <: Union{AbstractString, Integer, AbstractFloat, Bool, Dates.DateTime, Dates.Time, Dates.Date}
     return x
+end
+
+"""
+    from_toml(::Type{Any}, x)
+
+Convert an `Any` value to the appropriate type based on its type.
+"""
+function from_toml(::Type{Any}, x)
+    from_toml(typeof(x), x)
 end
