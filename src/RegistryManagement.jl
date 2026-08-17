@@ -17,33 +17,20 @@ function InitializeRegistry(; ID::T,
 end
 
 """
-    AddDataset!(registry, dataset)
+    AddDataset!(registry::DataRegistry, dataset::Dataset)
 
-Add a Dataset to a DataRegistry.
-
-Checks:
-- Dataset ID does not already exist
-- All parent dataset IDs exist in the registry
-
-Updates:
-- Adds dataset to `registry.Datasets`
-- Sets the registration timestamp
+Add `dataset` to a `registry`.
+Checks that the ID doesn't already exist, and that all the parent datasets exist.
 """
 function AddDataset!(registry::DataRegistry, dataset::Dataset)
 
     # Check that ID is unique
     if haskey(registry.Datasets, dataset.ID)
-        error("Dataset with ID '$(dataset.ID)' already exists in registry.")
+        error("Dataset with ID '$(dataset.ID)' already exists in the Registry.")
     end
 
     # Check that parent datasets exist
-    missing_parents = [p for p in dataset.Parents if !haskey(registry.Datasets, p)]
-
-    if !isempty(missing_parents)
-        error("Cannot add dataset '$(dataset.ID)'. " *
-            "The following parent datasets do not exist: " *
-            "$(join(missing_parents, ", "))")
-    end
+    ValidateParents(registry, dataset.Parents)
 
     # Add dataset
     dataset.Registered = now()
@@ -57,18 +44,9 @@ end
 """
     UpdateDataset!(registry, ID; kwargs...)
 
-Update fields of an existing Dataset in a DataRegistry.
-
+Update fields of existing Dataset `ID` in `registry`.
 Only fields provided as keyword arguments are modified.
 The dataset's LastModified timestamp is updated automatically.
-
-Example:
-    UpdateDataset!(
-        registry,
-        "temperature_L1";
-        Parents=["temperature_raw"],
-        Description="Updated description"
-    )
 """
 function UpdateDataset!(registry::DataRegistry, ID::String; kwargs...)
 
@@ -80,41 +58,27 @@ function UpdateDataset!(registry::DataRegistry, ID::String; kwargs...)
     dataset = registry.Datasets[ID]
 
     # Check that all fields exist
-    valid_fields = Set(fieldnames(Dataset))
+    invalid_fields = Set((:ID, :Registered)) # fields that are not allowed to be modified
+    valid_fields = setdiff(Set(fieldnames(Dataset)), invalid_fields) # fields that are allowed to be modified
 
-    for key in keys(kwargs)
-        if !(key in valid_fields)
-            error("Dataset has no field '$key'. " * "Valid fields are: $(join(valid_fields, ", "))")
-        end
-    end
-
-    # Update fields
     for (key, value) in kwargs
-
-        # Do not allow changing the ID
-        if key == :ID
-            error("Dataset ID cannot be modified. Use RemoveDataset! and AddDataset! instead.")
+        if !(key in valid_fields)
+            if key == :ID
+                error("Dataset ID cannot be modified.")
+            elseif key == :Registered
+                error("Dataset registration time cannot be modified.")
+            else
+                error("Dataset has no field '$key'. " * "Valid fields are: $(join(valid_fields, ", "))")
+            end
+        else
+            setfield!(dataset, key, value) # update field
         end
-
-        # Do not allow changing the registration time
-        if key == :Registered
-            error("Dataset registration time cannot be modified. Use RemoveDataset! and AddDataset! instead.")
-        end
-
-        setfield!(dataset, key, value)
     end
-
 
     # Validate parents if changed
     if :Parents in keys(kwargs)
-
-        missing_parents = [p for p in dataset.Parents if !haskey(registry.Datasets, p)]
-
-        if !isempty(missing_parents)
-            error("Cannot update dataset '$ID'. " * "The following parent datasets do not exist: " * "$(join(missing_parents, ", "))")
-        end
+        ValidateParents(registry, dataset.Parents)
     end
-
 
     # Update modification timestamp
     dataset.LastModified = now()
@@ -126,24 +90,23 @@ end
 
 
 """
-    UpdateOrCreateDataset!(registry, ID; kwargs...)
+    UpdateOrAddDataset!(registry, ID; kwargs...)
 
 Update an existing Dataset in a DataRegistry, or create a new Dataset if
 it does not exist.
-
-If the dataset already exists, only the supplied fields are modified.
-If it does not exist, a new Dataset is created using the supplied fields
-and default values for unspecified fields.
 """
-function UpdateOrCreateDataset!(registry::DataRegistry, ID::String; kwargs...)
+function UpdateOrAddDataset!(registry::DataRegistry, ID::String; kwargs...)
 
     if haskey(registry.Datasets, ID)
         println("Dataset '$(ID)' already exists, updating...")
         UpdateDataset!(registry, ID; kwargs...)
     else
         println("Dataset '$(ID)' does not exist, creating it instead.")
-        dataset = Dataset(ID; kwargs...)
+        dataset = Dataset(; ID, kwargs...)
         AddDataset!(registry, dataset)
     end
     return nothing
 end
+
+
+#DeleteDataset!(registry::DataRegistry, ID)
