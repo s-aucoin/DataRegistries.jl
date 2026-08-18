@@ -81,8 +81,18 @@ end
 
     # test not changing anything #
     registry_copy = deepcopy(registry)
-    UpdateDataset!(registry, test_id)
-    @test registry == registry_copy
+    UpdateDataset!(registry, test_id) # equivalent to touch!()
+
+    # test that only the LastModified Field was updated #
+    @test registry.Datasets[test_id].Title == registry_copy.Datasets[test_id].Title
+    @test registry.Datasets[test_id].DataPath == registry_copy.Datasets[test_id].DataPath
+    @test registry.Datasets[test_id].SourcePath == registry_copy.Datasets[test_id].SourcePath
+    @test registry.Datasets[test_id].Description == registry_copy.Datasets[test_id].Description
+    @test registry.Datasets[test_id].Authors == registry_copy.Datasets[test_id].Authors
+    @test registry.Datasets[test_id].ProcessingLevel == registry_copy.Datasets[test_id].ProcessingLevel
+    @test registry.Datasets[test_id].Metadata == registry_copy.Datasets[test_id].Metadata
+    
+    @test registry.Datasets[test_id].LastModified != registry_copy.Datasets[test_id].LastModified # check that LastModified was changed
 
 
     # test the error is the the dataset doesn't exist #
