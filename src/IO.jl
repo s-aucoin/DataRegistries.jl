@@ -1,3 +1,5 @@
+export SaveRegistry, LoadRegistry
+
 """
     SaveRegistry(registry, filename)
 

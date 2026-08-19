@@ -1,3 +1,9 @@
+import REPL
+using REPL.TerminalMenus
+
+export InitializeRegistry, AddDataset!, UpdateDataset!, UpdateOrAddDataset!, RemoveDataset!
+
+
 """
     InitializeRegistry(; Title::String = DrWatson.projectname(),
                          ID::String,
@@ -46,6 +52,7 @@ end
 
 Update fields of existing Dataset `ID` in `registry`.
 Only fields provided as keyword arguments are modified.
+Checks that the dataset exists, and that all provided fields are valid.
 The dataset's LastModified timestamp is updated automatically.
 """
 function UpdateDataset!(registry::DataRegistry, ID::String; kwargs...)
@@ -92,8 +99,7 @@ end
 """
     UpdateOrAddDataset!(registry, ID; kwargs...)
 
-Update an existing Dataset in a DataRegistry, or create a new Dataset if
-it does not exist.
+Update existing, or add new `Dataset` `ID` to `registry`.
 """
 function UpdateOrAddDataset!(registry::DataRegistry, ID::String; kwargs...)
 
@@ -109,4 +115,44 @@ function UpdateOrAddDataset!(registry::DataRegistry, ID::String; kwargs...)
 end
 
 
-#DeleteDataset!(registry::DataRegistry, ID)
+
+"""
+    RemoveDataset!(registry, ID)
+
+Remove `Dataset` `ID` from `registry`.
+Checks that the dataset exists.
+Asks for confirmation if the dataset is a parent of any other datasets.
+"""
+function RemoveDataset!(registry::DataRegistry, ID; confirm=true, allow_orphans=true)
+
+    # Check that dataset exists
+    if !haskey(registry.Datasets, ID)
+        error("Dataset '$ID' does not exist in registry.")
+    end
+
+    # Check that this dataset doesn't have children that would be orphaned #
+    children = FindChildren(registry, ID)
+    if !isempty(children)
+        if allow_orphans
+            @warn "Dataset '$ID' is a parent of datasets: $(join(children, ", ")). Deleting it will orphan these datasets and may cause problems."
+            
+            if confirm
+                menu = RadioMenu(["Yes", "No"], charset=:ascii)
+                choice = request("Continue?", menu)
+
+                if choice == 2
+                    println("Dataset '$ID' not deleted.")
+                    return nothing
+                end
+            end
+        else
+            error("Dataset '$ID' is a parent of datasets: $(join(children, ", ")). Deleting it would orphan these datasets. Set `allow_orphans=true` to override this check.")
+        end
+    end
+
+    # Delete dataset
+    delete!(registry.Datasets, ID)
+    println("Dataset '$(ID)' deleted from the registry.")
+
+    return nothing
+end

@@ -1,4 +1,6 @@
 ## These are the basic structures that the DataRegistries package is built on. ##
+export AuthorInfo, ProjectInfo, Dataset, DataRegistry, propertytype
+
 
 ### Acceptable types for converting to TOML ###
 const TOMLTypes = Union{

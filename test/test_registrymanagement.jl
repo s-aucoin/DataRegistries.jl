@@ -127,3 +127,31 @@ end
     @test registry.Datasets[test_id].Title == "Updated Dataset"
 
 end
+
+
+@testset "RemoveDataset" begin
+
+    registry = InitializeRegistry(ID="test_registry")
+
+    # Add a dataset with no parents
+    test_id = "test_dataset"
+    AddDataset!(registry, Dataset(ID=test_id))
+
+    # Add a child dataset with the first dataset as a parent
+    child_id = "child_dataset"
+    AddDataset!(registry, Dataset(ID=child_id, Parents=[test_id]))
+
+    # test that trying to remove a dataset with children fails if allow_orphans is false
+    @test_throws ErrorException RemoveDataset!(registry, test_id; allow_orphans=false)
+
+    # test allowing orphans gives a warning and removes the dataset #
+    @test_warn "Dataset '$test_id' is a parent of datasets: $child_id. Deleting it will orphan these datasets and may cause problems." RemoveDataset!(registry, test_id; confirm=false, allow_orphans=true)
+    @test !haskey(registry.Datasets, test_id) # check that the dataset was removed
+
+    # Test that RemoveDataset! removes the dataset without children from the registry
+    RemoveDataset!(registry, child_id)
+    @test !haskey(registry.Datasets, child_id)
+
+    # Test that RemoveDataset! throws an error for a non-existent dataset ID
+    @test_throws ErrorException RemoveDataset!(registry, "non_existent_dataset")
+end

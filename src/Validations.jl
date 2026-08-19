@@ -1,4 +1,6 @@
 # functions for validating #
+export ValidateParents
+
 
 function ValidateParents(registry::DataRegistry, Parents::Vector{String})
 

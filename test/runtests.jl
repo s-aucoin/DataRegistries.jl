@@ -9,4 +9,5 @@ using Dates
     include("test_validations.jl")
     include("test_registrymanagement.jl")
     include("test_IO.jl")
+    include("test_registryqueries.jl")
 end
