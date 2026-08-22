@@ -85,7 +85,7 @@ end
     custom_metadata = Dict{AbstractString, DataRegistries.TOMLTypes}("test_key"=>"test_value", "test_key4"=>123)
     dataset = Dataset(ID="example_dataset", 
                         Title="Custom Dataset", 
-                        DataPath="example.jl", 
+                        DataPath=["example1.nc", "example2.nc"], 
                         SourcePath="example.jl",
                         Description="example description", 
                         Authors=DataRegistries.authorlist,
@@ -97,7 +97,7 @@ end
 
     @test dataset.ID == "example_dataset"
     @test dataset.Title == "Custom Dataset"
-    @test dataset.DataPath == "example.jl"
+    @test dataset.DataPath == ["example1.nc", "example2.nc"]
     @test dataset.SourcePath == "example.jl"
     @test dataset.Description == "example description"
     @test dataset.Authors == DataRegistries.authorlist

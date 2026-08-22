@@ -75,6 +75,24 @@ function from_toml(::Type{D}, x::AbstractDict) where {K, V, D<:AbstractDict{K,V}
 end
 
 """
+    from_toml(::Type{Union{AbstractString, Vector{String}}}, x::Vector{String})
+
+Convert each element of a TOML-formatted `Vector{String}` to the appropriate type.
+"""
+function from_toml(::Type{Union{AbstractString, Vector{String}}}, x::Vector{String})
+    return from_toml.(Ref(String), x)
+end
+
+"""
+    from_toml(::Type{Union{AbstractString, Vector{String}}}, x::AbstractString)
+
+Convert a TOML-formatted `AbstractString` to the appropriate type. Special case for DataPath type requirements.
+"""
+function from_toml(::Type{Union{AbstractString, Vector{String}}}, x::AbstractString)
+    return x
+end
+
+"""
     from_toml(::Type{T}, x::T) where T <: Union{AbstractString, Integer, AbstractFloat, Bool, Dates.DateTime, Dates.Time, Dates.Date}
 
 Allow every TOML-compatible format except `AbstractDict` and `AbstractVector` to pass unchanged.

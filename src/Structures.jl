@@ -45,7 +45,7 @@ end
 @with_kw mutable struct Dataset @deftype AbstractString
     ID                                              # Unique identifier for the dataset
     Title = "Example Dataset"                       # Title of the dataset
-    DataPath = "data/example.nc"                    # Relative path to the data file
+    DataPath::Union{AbstractString, Vector{String}} = "data/example.nc" # Relative path to the data file
     SourcePath = ""                                 # Relative path to the script that generated the dataset
     Description = ""                                # A description of the dataset
 

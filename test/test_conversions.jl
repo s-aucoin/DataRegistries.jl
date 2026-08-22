@@ -39,7 +39,7 @@
     custom_metadata = Dict{String, DataRegistries.TOMLTypes}("test_key"=>"test_value", "test_key4"=>123)
     dataset = Dataset(ID="example_dataset", 
                         Title="Custom Dataset", 
-                        DataPath="example.jl", 
+                        DataPath=["example1.nc", "example2.nc"], 
                         SourcePath="example.jl",
                         Description="example description", 
                         Authors=DataRegistries.authorlist,
@@ -55,7 +55,7 @@
     @test propertytype(toml_dataset) == expected_type_dataset
     @test toml_dataset == Dict("ID"=>"example_dataset", 
                                 "Title"=>"Custom Dataset",
-                                "DataPath"=>"example.jl", 
+                                "DataPath"=>["example1.nc", "example2.nc"], 
                                 "SourcePath"=>"example.jl",
                                 "Description"=>"example description", 
                                 "Authors"=> DataRegistries.to_toml(DataRegistries.authorlist),

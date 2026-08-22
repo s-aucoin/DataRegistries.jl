@@ -40,6 +40,7 @@ function AddDataset!(registry::DataRegistry, dataset::Dataset)
 
     # Add dataset
     dataset.Registered = now()
+    dataset.LastModified = now()
     registry.Datasets[dataset.ID] = dataset
 
     println("Dataset '$(dataset.ID)' added to registry.")
