@@ -1,9 +1,9 @@
 export SaveRegistry, LoadRegistry
 
 """
-    SaveRegistry(registry, filename)
+    SaveRegistry(registry::DataRegistry; path::AbstractString="DataRegistry.toml")
 
-Save a DataRegistry object to a TOML file.
+Save a `DataRegistry` object to a TOML file.
 """
 function SaveRegistry(registry::DataRegistry; path::AbstractString="DataRegistry.toml")
 
@@ -17,9 +17,9 @@ end
 
 
 """
-    LoadRegistry(filename)
+    LoadRegistry(filename::AbstractString)
 
-Load a DataRegistry from a TOML file.
+Load a `DataRegistry` from a TOML file.
 """
 function LoadRegistry(filename::AbstractString)
 

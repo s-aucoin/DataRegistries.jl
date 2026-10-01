@@ -58,7 +58,7 @@ end
 
 
 """
-    ValidateDataset(registry::DataRegistry, ID::String)
+    ValidateDataset(registry::DataRegistry, ID::String; allow_no_data=false)
 
 Validate `Dataset` `ID` in `registry` by checking that
 - the 'Parents' exist;
@@ -156,7 +156,7 @@ function ValidateDataset(registry::DataRegistry, ID::String; allow_no_data=false
     return nothing
 end
 
-
+#=
 function ValidateRegistry()
 
     # check that the project has an author #
@@ -177,3 +177,4 @@ function ValidateRegistry()
 
     return nothing
 end
+=#

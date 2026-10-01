@@ -5,10 +5,10 @@ export InitializeRegistry, AddDataset!, UpdateDataset!, UpdateOrAddDataset!, Rem
 
 
 """
-    InitializeRegistry(; Title::String = DrWatson.projectname(),
-                         ID::String,
-                         Authors::Dict{String, AuthorInfo} = authorlist,
-                         Description::String = "")
+    InitializeRegistry(; ID::T,
+                         Title::T = "Example Project",
+                         Authors::Dict{T, AuthorInfo} = Dict{String, AuthorInfo}("Author" => AuthorInfo(Name="Author")),
+                         Description::T = "") where {T <: AbstractString}
 
 Initialize a DataRegistry object with project metadata, but no datasets.
 """
@@ -49,7 +49,7 @@ end
 
 
 """
-    UpdateDataset!(registry, ID; kwargs...)
+    UpdateDataset!(registry::DataRegistry, ID::String; kwargs...)
 
 Update fields of existing Dataset `ID` in `registry`.
 Only fields provided as keyword arguments are modified.
@@ -98,7 +98,7 @@ end
 
 
 """
-    UpdateOrAddDataset!(registry, ID; kwargs...)
+    UpdateOrAddDataset!(registry::DataRegistry, ID::String; kwargs...)
 
 Update existing, or add new `Dataset` `ID` to `registry`.
 """
@@ -118,7 +118,7 @@ end
 
 
 """
-    RemoveDataset!(registry, ID)
+    RemoveDataset!(registry::DataRegistry, ID; confirm=true, allow_orphans=true)
 
 Remove `Dataset` `ID` from `registry`.
 Checks that the dataset exists.

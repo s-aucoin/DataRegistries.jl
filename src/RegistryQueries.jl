@@ -4,7 +4,7 @@ export FindChildren
 
 
 """
-    FindChildren(registry, ID)
+    FindChildren(registry::DataRegistry, ID::String)
 
 Find all `Datasets` in `registry` that have `ID` as a parent.
 """
