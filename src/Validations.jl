@@ -1,5 +1,5 @@
 # functions for validating #
-export ValidateParents, DataExists, ValidateDataset
+export ValidateParents, DataExists, ValidateDataset, ValidateRegistry
 
 
 """
@@ -63,6 +63,7 @@ end
 Validate `Dataset` `ID` in `registry` by checking that
 - the 'Parents' exist;
 - the 'Dataset' has an author;
+- the `LastModified` and `Registered` dates are not in the future;
 - the `LastModified` is after the `Registered` date;
 - that the `DataPath` and `SourcePath` are valid;
 - the data exists on disk 
@@ -70,32 +71,6 @@ Validate `Dataset` `ID` in `registry` by checking that
 function ValidateDataset(registry::DataRegistry, ID::String; allow_no_data=false)
 
     errors = []
-
-    # check that the parents exist #
-    try
-        ValidateParents(registry, registry.Datasets[ID].Parents)
-    catch e
-        push!(errors, (; error = e))
-    end
-
-    # check that the dataset has an author #
-    if isempty(registry.Datasets[ID].Authors)
-        try
-            error("Dataset '$(ID)' does not have an author.")
-        catch e
-            push!(errors, (; error = e))
-        end
-    end
-
-    # check that the LastModified is after the Registered date #
-    if !(registry.Datasets[ID].LastModified >= registry.Datasets[ID].Registered)
-        try
-            error("The 'LastModified' date for dataset '$ID' is before the 'Registered' date.")
-        catch e
-            push!(errors, (; error = e))
-        end
-    end
-
 
     # Check that the DataPath and SourcePath are valid #
     if !isdir(dirname(registry.Datasets[ID].SourcePath))
@@ -140,11 +115,56 @@ function ValidateDataset(registry::DataRegistry, ID::String; allow_no_data=false
     end
 
 
+    # check that the dataset has an author #
+    if isempty(registry.Datasets[ID].Authors)
+        try
+            error("Dataset '$(ID)' does not have an author.")
+        catch e
+            push!(errors, (; error = e))
+        end
+    end
+
+
+    # check that the parents exist #
+    try
+        ValidateParents(registry, registry.Datasets[ID].Parents)
+    catch e
+        push!(errors, (; error = e))
+    end
+
+
+    # check that the LastModified and Registered dates are not in the future #
+    if registry.Datasets[ID].LastModified > now()
+        try
+            error("The 'LastModified' date for dataset '$ID' is in the future.")
+        catch e
+            push!(errors, (; error = e))
+        end
+    end
+
+    if registry.Datasets[ID].Registered > now()
+        try
+            error("The 'Registered' date for dataset '$ID' is in the future.")
+        catch e
+            push!(errors, (; error = e))
+        end
+    end
+
+
+    # check that the LastModified is after the Registered date #
+    if !(registry.Datasets[ID].LastModified >= registry.Datasets[ID].Registered)
+        try
+            error("The 'LastModified' date for dataset '$ID' is before the 'Registered' date.")
+        catch e
+            push!(errors, (; error = e))
+        end
+    end
+
     # Print summary of errors #
     if isempty(errors)
         println("Dataset '$ID' passed all validation checks.")
     else
-        println("Dataset '$ID' failed $(length(errors)) of 6 validation checks.")
+        println("Dataset '$ID' failed $(length(errors)) of 8 validation checks.")
         println("=== ERROR DETAILS ===")
         for item in errors
             println("Error: $(item.error)")
@@ -156,20 +176,50 @@ function ValidateDataset(registry::DataRegistry, ID::String; allow_no_data=false
     return nothing
 end
 
-#=
-function ValidateRegistry()
+
+
+"""
+    ValidateRegistry(registry::DataRegistry; allow_no_data=false)
+
+Validate `registry` by checking that
+- the registry has an author;
+- the `Initialized` date is not in the future;
+- there are no circular dependencies in the parent-child relationships;
+- each dataset is valid. 
+"""
+function ValidateRegistry(registry::DataRegistry; allow_no_data=false)
+
+    errors = []
 
     # check that the project has an author #
+    if isempty(registry.Info.Authors)
+        try
+            error("The registry does not have an author.")
+        catch e
+            push!(errors, (; error = e))
+        end
+    end
 
-    # check for duplicate dataset IDs #
+
+    # check that the Initialized dates is not in the future #
+    if registry.Info.Initialized > now()
+        try
+            error("The 'Initialized' date for the registry is in the future.")
+        catch e
+            push!(errors, (; error = e))
+        end
+    end
+
 
     # check for circular dependencies in the parent-child relationships #
+    # implement this with Graphs.jl simplecycles(dg::::IsDirected) or simplecyclescount(dg::DiGraph, ceiling = 10^6)
+
 
     # Validate each dataset in the registry #
     dataset_errors = []
     for (id, _) in registry.Datasets
         try
-            ValidateDataset(registry, id)
+            ValidateDataset(registry, id; allow_no_data)
         catch e
             push!(dataset_errors, (; error = e))
         end
@@ -177,4 +227,3 @@ function ValidateRegistry()
 
     return nothing
 end
-=#
