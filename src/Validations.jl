@@ -225,5 +225,18 @@ function ValidateRegistry(registry::DataRegistry; allow_no_data=false)
         end
     end
 
+
+    # Print summary of errors #
+    if isempty(errors) && isempty(dataset_errors)
+        println("Registry passed all validation checks.")
+    else
+        println("Registry failed $(length(errors)) of 3 validation checks.")
+        println("Registry failed $(length(dataset_errors)) of $(length(registry.Datasets)) dataset validation checks.")
+        println("=== ERROR DETAILS ===")
+        for item in errors
+            println("Error: $(item.error)")
+        end
+    end
+
     return nothing
 end
