@@ -42,6 +42,7 @@ authorlist = Dict{String, AuthorInfo}(
     Description = ""                     # A description of the project
 end
 
+
 @with_kw mutable struct Dataset @deftype AbstractString
     ID                                              # Unique identifier for the dataset
     Title = "Example Dataset"                       # Title of the dataset
