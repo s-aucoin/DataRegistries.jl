@@ -34,6 +34,7 @@ FindChildren
 ValidateParents
 DataExists
 ValidateDataset
+ValidateRegistry
 ```
 
 ### Conversions
