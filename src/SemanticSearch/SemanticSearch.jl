@@ -39,8 +39,6 @@ function DatasetText(dataset::Dataset; included_fields=[:ID, :Title, :Descriptio
 end
 
 
-
-
 function SemanticSearch(index::DataRegistries.SemanticIndex, query::AbstractString; k::Integer = 10, embedder=DataRegistries.LocalBERT())
     k > 0 || throw(ArgumentError("k must be positive"))
 

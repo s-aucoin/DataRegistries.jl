@@ -11,7 +11,7 @@ struct LocalBERT{E, M}
 end
 
 function LocalBERT()
-    encoder, model = hgf"bert-base-uncased"
+    encoder, model = hgf"sentence-transformers/all-MiniLM-L6-v2" #hgf"bert-base-uncased"
     return LocalBERT(encoder, model)
 end
 
@@ -20,10 +20,15 @@ function (e::LocalBERT)(text::AbstractString)
     hidden = e.model(sample).hidden_state
 
     # Expected layout: hidden dimension × token × batch.
-    n = size(hidden, 2)
+    #n = size(hidden, 2)
+
+    # Number of actual tokens, excluding padding.
+    n = Int(first(sample.attention_mask.len))
 
     n > 2 || throw(ArgumentError("Text is too short to embed"))
 
-    # Mean-pool the token vectors, excluding boundary tokens.
-    return vec(mean(hidden[:, 2:(n - 1), 1]; dims = 2))
+    # Mean-pool all valid tokens, including special tokens.
+    token_embeddings = @view hidden[:, 1:n, 1]
+
+    return vec(mean(token_embeddings; dims=2))
 end
