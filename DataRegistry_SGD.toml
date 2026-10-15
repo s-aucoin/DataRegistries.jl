@@ -1,0 +1,712 @@
+[Info]
+Description = "Analysing a Submarine Groundwater Discharge spring in Hiji, Oita, Japan"
+Initialized = 2026-08-07T16:08:17.917Z
+Title = "HijiSGDPlume"
+ID = "hiji_spring_plume"
+
+    [Info.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+[Datasets.boat_adcp_raw]
+Parents = []
+DataPath = "data\\raw\\adcp\\boat_day\\Hiji_Spring_B_nonHR.ad2cp"
+LastModified = 2026-08-07T16:38:30.576Z
+SourcePath = ""
+Registered = 2026-08-07T16:35:09.764Z
+ID = "boat_adcp_raw"
+Title = "Raw Boat ADCP Data"
+Description = "Raw ADCP data from the boat survey around the Hiji spring plume"
+ProcessingLevel = "raw"
+
+    [Datasets.boat_adcp_raw.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.boat_adcp_raw.Metadata]
+
+[Datasets.velocity_moments_beam4]
+Parents = ["float_adcp_processed"]
+DataPath = "data\\L3\\tke\\umom_beam4.jld2"
+LastModified = 2026-08-07T20:17:12.409Z
+SourcePath = "processing\\L3\\tke\\run_L3_calculate_TKE_dissipation_rate.jl"
+Registered = 2026-08-07T20:17:12.409Z
+ID = "velocity_moments_beam4"
+Title = "Velocity Moments Beam 4"
+Description = "Velocity moments used in the estimation of ϵ, calculated from the along beam velocities of beam 4. The top level data structure has one index per ϵ time. Each time has an x vector and each x position has a corresponding ML2 or ML3 matrix where the first column is separation distance and the second column is the velocity difference moment."
+ProcessingLevel = "L3"
+
+    [Datasets.velocity_moments_beam4.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.velocity_moments_beam4.Metadata]
+
+[Datasets.boat_adcp_L0]
+Parents = []
+DataPath = "data/default_data.csv"
+LastModified = 2026-08-07T16:44:24.319Z
+SourcePath = "scripts/generate_default_data.jl"
+Registered = 2026-08-07T16:44:24.319Z
+ID = "boat_adcp_L0"
+Title = "Default Title"
+Description = "Default description."
+ProcessingLevel = "L1"
+
+    [Datasets.boat_adcp_L0.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.boat_adcp_L0.Metadata]
+
+[Datasets.tke_dissipation_rate_beam5]
+Parents = ["float_adcp_processed"]
+DataPath = "data\\L3\\tke\\tkedisp_beam5.nc"
+LastModified = 2026-08-07T20:17:57.317Z
+SourcePath = "processing\\L3\\tke\\run_L3_calculate_TKE_dissipation_rate.jl"
+Registered = 2026-08-07T20:17:57.317Z
+ID = "tke_dissipation_rate_beam5"
+Title = "TKE Dissipation Rate Beam 5"
+Description = "TKE dissipation rate estimates and related parameters for beam 5"
+ProcessingLevel = "L3"
+
+    [Datasets.tke_dissipation_rate_beam5.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.tke_dissipation_rate_beam5.Metadata]
+
+[Datasets.float_gps_raw]
+Parents = []
+DataPath = "data/default_data.csv"
+LastModified = 2026-08-07T16:43:59.616Z
+SourcePath = "scripts/generate_default_data.jl"
+Registered = 2026-08-07T16:43:59.616Z
+ID = "float_gps_raw"
+Title = "Default Title"
+Description = "Default description."
+ProcessingLevel = "L1"
+
+    [Datasets.float_gps_raw.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.float_gps_raw.Metadata]
+
+[Datasets.float_waves]
+Parents = ["float_adcp_L0", "float_ctd_processed"]
+DataPath = "data\\L2\\waves\\wave_parameters.nc"
+LastModified = 2026-08-07T19:41:50.432Z
+SourcePath = "processing\\L2\\float_adcp\\run_L2_process_adcp.jl"
+Registered = 2026-08-07T19:41:50.442Z
+ID = "float_waves"
+Title = "Wave Parameters"
+Description = "Wave parameters estimated from the ADCP during the Hiji spring float deployment"
+ProcessingLevel = "L2"
+
+    [Datasets.float_waves.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.float_waves.Metadata]
+
+[Datasets.velocity_moments_beam2]
+Parents = ["float_adcp_processed"]
+DataPath = "data\\L3\\tke\\umom_beam2.jld2"
+LastModified = 2026-08-07T20:14:58.586Z
+SourcePath = "processing\\L3\\tke\\run_L3_calculate_TKE_dissipation_rate.jl"
+Registered = 2026-08-07T20:14:58.586Z
+ID = "velocity_moments_beam2"
+Title = "Velocity Moments Beam 2"
+Description = "Velocity moments used in the estimation of ϵ, calculated from the along beam velocities of beam 2. The top level data structure has one index per ϵ time. Each time has an x vector and each x position has a corresponding ML2 or ML3 matrix where the first column is separation distance and the second column is the velocity difference moment."
+ProcessingLevel = "L3"
+
+    [Datasets.velocity_moments_beam2.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.velocity_moments_beam2.Metadata]
+
+[Datasets.tke_dissipation_rate_beam3]
+Parents = ["float_adcp_processed"]
+DataPath = "data\\L3\\tke\\tkedisp_beam3.nc"
+LastModified = 2026-08-07T20:16:21.682Z
+SourcePath = "processing\\L3\\tke\\run_L3_calculate_TKE_dissipation_rate.jl"
+Registered = 2026-08-07T20:16:21.698Z
+ID = "tke_dissipation_rate_beam3"
+Title = "TKE Dissipation Rate Beam 3"
+Description = "TKE dissipation rate estimates and related parameters for beam 3"
+ProcessingLevel = "L3"
+
+    [Datasets.tke_dissipation_rate_beam3.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.tke_dissipation_rate_beam3.Metadata]
+
+[Datasets.boat_ctd_L0]
+Parents = []
+DataPath = "data/default_data.csv"
+LastModified = 2026-08-07T16:50:46.245Z
+SourcePath = "scripts/generate_default_data.jl"
+Registered = 2026-08-07T16:50:46.245Z
+ID = "boat_ctd_L0"
+Title = "Default Title"
+Description = "Default description."
+ProcessingLevel = "L1"
+
+    [Datasets.boat_ctd_L0.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.boat_ctd_L0.Metadata]
+
+[Datasets.boat_gps_raw]
+Parents = []
+DataPath = "data/default_data.csv"
+LastModified = 2026-08-07T16:43:08.155Z
+SourcePath = "scripts/generate_default_data.jl"
+Registered = 2026-08-07T16:43:08.155Z
+ID = "boat_gps_raw"
+Title = "Default Title"
+Description = "Default description."
+ProcessingLevel = "L1"
+
+    [Datasets.boat_gps_raw.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.boat_gps_raw.Metadata]
+
+[Datasets.velocity_moments_beam1]
+Parents = ["float_adcp_processed"]
+DataPath = "data\\L3\\tke\\umom_beam1.jld2"
+LastModified = 2026-08-07T20:13:45.027Z
+SourcePath = "processing\\L3\\tke\\run_L3_calculate_TKE_dissipation_rate.jl"
+Registered = 2026-08-07T20:13:45.027Z
+ID = "velocity_moments_beam1"
+Title = "Velocity Moments Beam 1"
+Description = "Velocity moments used in the estimation of ϵ, calculated from the along beam velocities of beam 1. The top level data structure has one index per ϵ time. Each time has an x vector and each x position has a corresponding ML2 or ML3 matrix where the first column is separation distance and the second column is the velocity difference moment."
+ProcessingLevel = "L3"
+
+    [Datasets.velocity_moments_beam1.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.velocity_moments_beam1.Metadata]
+
+[Datasets.float_ctd_raw]
+Parents = []
+DataPath = "data/default_data.csv"
+LastModified = 2026-08-07T16:41:23.364Z
+SourcePath = "scripts/generate_default_data.jl"
+Registered = 2026-08-07T16:41:23.364Z
+ID = "float_ctd_raw"
+Title = "Default Title"
+Description = "Default description."
+ProcessingLevel = "L1"
+
+    [Datasets.float_ctd_raw.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.float_ctd_raw.Metadata]
+
+[Datasets.float_adcp_raw]
+Parents = []
+DataPath = "data/default_data.csv"
+LastModified = 2026-08-07T16:40:12.471Z
+SourcePath = "scripts/generate_default_data.jl"
+Registered = 2026-08-07T16:40:12.471Z
+ID = "float_adcp_raw"
+Title = "Default Title"
+Description = "Default description."
+ProcessingLevel = "L1"
+
+    [Datasets.float_adcp_raw.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.float_adcp_raw.Metadata]
+
+[Datasets.float_adcp_L0]
+Parents = []
+DataPath = "data/default_data.csv"
+LastModified = 2026-08-07T16:45:33.276Z
+SourcePath = "scripts/generate_default_data.jl"
+Registered = 2026-08-07T16:45:33.276Z
+ID = "float_adcp_L0"
+Title = "Default Title"
+Description = "Default description."
+ProcessingLevel = "L1"
+
+    [Datasets.float_adcp_L0.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.float_adcp_L0.Metadata]
+
+[Datasets.gebco_bathymetry_L0]
+Parents = []
+DataPath = "data/default_data.csv"
+LastModified = 2026-08-07T16:55:11.363Z
+SourcePath = "scripts/generate_default_data.jl"
+Registered = 2026-08-07T16:55:11.363Z
+ID = "gebco_bathymetry_L0"
+Title = "Default Title"
+Description = "Default description."
+ProcessingLevel = "L1"
+
+    [Datasets.gebco_bathymetry_L0.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.gebco_bathymetry_L0.Metadata]
+
+[Datasets.tke_dissipation_rate_beam1]
+Parents = ["float_adcp_processed"]
+DataPath = "data\\L3\\tke\\tkedisp_beam1.nc"
+LastModified = 2026-08-07T20:13:26.771Z
+SourcePath = "processing\\L3\\tke\\run_L3_calculate_TKE_dissipation_rate.jl"
+Registered = 2026-08-07T20:13:26.787Z
+ID = "tke_dissipation_rate_beam1"
+Title = "TKE Dissipation Rate Beam 1"
+Description = "TKE dissipation rate estimates and related parameters for beam 1"
+ProcessingLevel = "L3"
+
+    [Datasets.tke_dissipation_rate_beam1.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.tke_dissipation_rate_beam1.Metadata]
+
+[Datasets.velocity_moments_beam5]
+Parents = ["float_adcp_processed"]
+DataPath = "data\\L3\\tke\\umom_beam5.jld2"
+LastModified = 2026-08-07T20:18:04.465Z
+SourcePath = "processing\\L3\\tke\\run_L3_calculate_TKE_dissipation_rate.jl"
+Registered = 2026-08-07T20:18:04.465Z
+ID = "v_moments_beam_5"
+Title = "Velocity Moments Beam 5"
+Description = "Velocity moments used in the estimation of ϵ, calculated from the along beam velocities of beam 5. The top level data structure has one index per ϵ time. Each time has an x vector and each x position has a corresponding ML2 or ML3 matrix where the first column is separation distance and the second column is the velocity difference moment."
+ProcessingLevel = "L3"
+
+    [Datasets.velocity_moments_beam5.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.velocity_moments_beam5.Metadata]
+
+[Datasets.spring_point_gps_L0]
+Parents = []
+DataPath = "data/default_data.csv"
+LastModified = 2026-08-07T16:58:40.566Z
+SourcePath = "scripts/generate_default_data.jl"
+Registered = 2026-08-07T16:58:40.566Z
+ID = "spring_point_gps_L0"
+Title = "Default Title"
+Description = "Default description."
+ProcessingLevel = "L1"
+
+    [Datasets.spring_point_gps_L0.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.spring_point_gps_L0.Metadata]
+
+[Datasets.float_ctd_processed]
+Parents = ["spring_point_gps_L0", "float_ctd_L0", "ctd_times_L0"]
+DataPath = "data\\L1\\float_ctd\\spring_ctd_processed.nc"
+LastModified = 2026-08-07T19:38:19.901Z
+SourcePath = "processing\\L1\\float_ctd\\run_L1_process_ctd.jl"
+Registered = 2026-08-07T19:29:07.496Z
+ID = "float_ctd_processed"
+Title = "CTD Processed"
+Description = "CTD from the CTD of the Hiji spring float with some additional derived parameters"
+ProcessingLevel = "L1"
+
+    [Datasets.float_ctd_processed.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.float_ctd_processed.Metadata]
+
+[Datasets.freshwater_ratio]
+Parents = ["plume_parameters"]
+DataPath = "data\\L5\\freshwater_ratio\\freshwater_ratio.nc"
+LastModified = 2026-08-07T20:39:05.773Z
+SourcePath = "processing\\L5\\freshwater_ratio\\run_L5_calculate_freshwater_ratio.jl"
+Registered = 2026-08-07T20:39:05.773Z
+ID = "freshwater_ratio"
+Title = "Freshwater Ratio"
+Description = "The ratio between freshwater and ocean water in the Hiji spring discharge plume, inferred from the fitting results"
+ProcessingLevel = "L5"
+
+    [Datasets.freshwater_ratio.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.freshwater_ratio.Metadata]
+
+[Datasets.float_adcp_processed]
+Parents = ["float_adcp_L0", "float_ctd_processed"]
+DataPath = "data\\L2\\float_adcp\\hiji_sig1000_processed.nc"
+LastModified = 2026-08-07T19:41:50.394Z
+SourcePath = "processing\\L2\\float_adcp\\run_L2_process_adcp.jl"
+Registered = 2026-08-07T19:34:47.570Z
+ID = "float_adcp_processed"
+Title = "ADCP processed"
+Description = "Processed Hiji SGD plume ADCP data"
+ProcessingLevel = "L2"
+
+    [Datasets.float_adcp_processed.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.float_adcp_processed.Metadata]
+
+[Datasets.bottom_referenced_tke_dissipation_rate_beam3]
+Parents = ["float_adcp_processed", "tke_dissipation_rate_beam3"]
+DataPath = "data\\L4\\tke_bottom_reference\\tkedisp_beam3_bottom_reference.nc"
+LastModified = 2026-08-07T20:32:41.004Z
+SourcePath = "processing\\L4\\tke_bottom_reference\\run_L4_bottom_reference_tke.jl"
+Registered = 2026-08-07T20:32:41.004Z
+ID = "bottom_referenced_tke_dissipation_rate_beam3"
+Title = "Bottom-Referenced TKE Dissipation Rate Beam 3"
+Description = "TKE dissipation rate data shifted to be bottom-referenced rather than surface-referenced"
+ProcessingLevel = "L4"
+
+    [Datasets.bottom_referenced_tke_dissipation_rate_beam3.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.bottom_referenced_tke_dissipation_rate_beam3.Metadata]
+
+[Datasets.tke_dissipation_rate_beam4]
+Parents = ["float_adcp_processed"]
+DataPath = "data\\L3\\tke\\tkedisp_beam4.nc"
+LastModified = 2026-08-07T20:17:06.123Z
+SourcePath = "processing\\L3\\tke\\run_L3_calculate_TKE_dissipation_rate.jl"
+Registered = 2026-08-07T20:17:06.123Z
+ID = "tke_dissipation_rate_beam4"
+Title = "TKE Dissipation Rate Beam 4"
+Description = "TKE dissipation rate estimates and related parameters for beam 4"
+ProcessingLevel = "L3"
+
+    [Datasets.tke_dissipation_rate_beam4.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.tke_dissipation_rate_beam4.Metadata]
+
+[Datasets.bottom_referenced_tke_dissipation_rate_beam4]
+Parents = ["float_adcp_processed", "tke_dissipation_rate_beam4"]
+DataPath = "data\\L4\\tke_bottom_reference\\tkedisp_beam4_bottom_reference.nc"
+LastModified = 2026-08-07T20:35:35.811Z
+SourcePath = "processing\\L4\\tke_bottom_reference\\run_L4_bottom_reference_tke.jl"
+Registered = 2026-08-07T20:35:35.811Z
+ID = "bottom_referenced_tke_dissipation_rate_beam4"
+Title = "Bottom-Referenced TKE Dissipation Rate Beam 4"
+Description = "TKE dissipation rate data shifted to be bottom-referenced rather than surface-referenced"
+ProcessingLevel = "L4"
+
+    [Datasets.bottom_referenced_tke_dissipation_rate_beam4.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.bottom_referenced_tke_dissipation_rate_beam4.Metadata]
+
+[Datasets.bottom_referenced_tke_dissipation_rate_beam1]
+Parents = ["float_adcp_processed", "tke_dissipation_rate_beam1"]
+DataPath = "data\\L4\\tke_bottom_reference\\tkedisp_beam1_bottom_reference.nc"
+LastModified = 2026-08-07T20:27:05.861Z
+SourcePath = "processing\\L4\\tke_bottom_reference\\run_L4_bottom_reference_tke.jl"
+Registered = 2026-08-07T20:27:05.861Z
+ID = "bottom_referenced_tke_dissipation_rate_beam1"
+Title = "Bottom-Referenced TKE Dissipation Rate Beam 1"
+Description = "TKE dissipation rate data shifted to be bottom-referenced rather than surface-referenced"
+ProcessingLevel = "L4"
+
+    [Datasets.bottom_referenced_tke_dissipation_rate_beam1.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.bottom_referenced_tke_dissipation_rate_beam1.Metadata]
+
+[Datasets.float_adcp_bottom_reference]
+Parents = ["float_adcp_processed"]
+DataPath = "data\\L3\\float_adcp_bottom_reference\\hiji_bottom_reference_adcp.nc"
+LastModified = 2026-08-07T20:11:41.789Z
+SourcePath = "processing\\L3\\float_adcp_bottom_reference\\run_L3_bottom_reference_adcp.jl"
+Registered = 2026-08-07T20:11:41.827Z
+ID = "float_adcp_bottom_reference"
+Title = "Bottom-Referenced ADCP processed"
+Description = "ADCP data shifted to be bottom-referenced rather than surface-referenced"
+ProcessingLevel = "L3"
+
+    [Datasets.float_adcp_bottom_reference.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.float_adcp_bottom_reference.Metadata]
+
+[Datasets.velocity_moments_beam3]
+Parents = ["float_adcp_processed"]
+DataPath = "data\\L3\\tke\\umom_beam3.jld2"
+LastModified = 2026-08-07T20:16:34.876Z
+SourcePath = "processing\\L3\\tke\\run_L3_calculate_TKE_dissipation_rate.jl"
+Registered = 2026-08-07T20:16:34.876Z
+ID = "velocity_moments_beam3"
+Title = "Velocity Moments Beam 3"
+Description = "Velocity moments used in the estimation of ϵ, calculated from the along beam velocities of beam 3. The top level data structure has one index per ϵ time. Each time has an x vector and each x position has a corresponding ML2 or ML3 matrix where the first column is separation distance and the second column is the velocity difference moment."
+ProcessingLevel = "L3"
+
+    [Datasets.velocity_moments_beam3.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.velocity_moments_beam3.Metadata]
+
+[Datasets.float_ctd_L0]
+Parents = []
+DataPath = "data/default_data.csv"
+LastModified = 2026-08-07T16:47:05.629Z
+SourcePath = "scripts/generate_default_data.jl"
+Registered = 2026-08-07T16:47:05.629Z
+ID = "float_ctd_L0"
+Title = "Default Title"
+Description = "Default description."
+ProcessingLevel = "L1"
+
+    [Datasets.float_ctd_L0.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.float_ctd_L0.Metadata]
+
+[Datasets.ctd_times_L0]
+Parents = []
+DataPath = "data/default_data.csv"
+LastModified = 2026-08-07T16:49:10.034Z
+SourcePath = "scripts/generate_default_data.jl"
+Registered = 2026-08-07T16:49:10.034Z
+ID = "ctd_times_L0"
+Title = "Default Title"
+Description = "Default description."
+ProcessingLevel = "L1"
+
+    [Datasets.ctd_times_L0.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.ctd_times_L0.Metadata]
+
+[Datasets.bottom_referenced_tke_dissipation_rate_beam2]
+Parents = ["float_adcp_processed", "tke_dissipation_rate_beam2"]
+DataPath = "data\\L4\\tke_bottom_reference\\tkedisp_beam2_bottom_reference.nc"
+LastModified = 2026-08-07T20:29:55.316Z
+SourcePath = "processing\\L4\\tke_bottom_reference\\run_L4_bottom_reference_tke.jl"
+Registered = 2026-08-07T20:29:55.316Z
+ID = "bottom_referenced_tke_dissipation_rate_beam2"
+Title = "Bottom-Referenced TKE Dissipation Rate Beam 2"
+Description = "TKE dissipation rate data shifted to be bottom-referenced rather than surface-referenced"
+ProcessingLevel = "L4"
+
+    [Datasets.bottom_referenced_tke_dissipation_rate_beam2.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.bottom_referenced_tke_dissipation_rate_beam2.Metadata]
+
+[Datasets.plume_parameters]
+Parents = ["float_adcp_bottom_reference", "float_ctd_processed", "ctd_times_L0"]
+DataPath = "data\\L4\\plume_parameters\\plume_parameters.nc"
+LastModified = 2026-08-07T20:24:09.739Z
+SourcePath = "processing\\L4\\plume_parameters\\run_L4_calculate_plume_parameters.jl"
+Registered = 2026-08-07T20:24:09.739Z
+ID = "plume_parameters"
+Title = "Plume Parameters"
+Description = "Inferred plume parameters calculated from the measured plume vertical velocity and ambient density"
+ProcessingLevel = "L4"
+
+    [Datasets.plume_parameters.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.plume_parameters.Metadata]
+
+[Datasets.bottom_referenced_tke_dissipation_rate_beam5]
+Parents = ["float_adcp_processed", "tke_dissipation_rate_beam5"]
+DataPath = "data\\L4\\tke_bottom_reference\\tkedisp_beam5_bottom_reference.nc"
+LastModified = 2026-08-07T20:38:22.238Z
+SourcePath = "processing\\L4\\tke_bottom_reference\\run_L4_bottom_reference_tke.jl"
+Registered = 2026-08-07T20:38:22.238Z
+ID = "bottom_referenced_tke_dissipation_rate_beam5"
+Title = "Bottom-Referenced TKE Dissipation Rate Beam 5"
+Description = "TKE dissipation rate data shifted to be bottom-referenced rather than surface-referenced"
+ProcessingLevel = "L4"
+
+    [Datasets.bottom_referenced_tke_dissipation_rate_beam5.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.bottom_referenced_tke_dissipation_rate_beam5.Metadata]
+
+[Datasets.tke_dissipation_rate_beam2]
+Parents = ["float_adcp_processed"]
+DataPath = "data\\L3\\tke\\tkedisp_beam2.nc"
+LastModified = 2026-08-07T20:14:47.283Z
+SourcePath = "processing\\L3\\tke\\run_L3_calculate_TKE_dissipation_rate.jl"
+Registered = 2026-08-07T20:14:47.283Z
+ID = "tke_dissipation_rate_beam2"
+Title = "TKE Dissipation Rate Beam 2"
+Description = "TKE dissipation rate estimates and related parameters for beam 2"
+ProcessingLevel = "L3"
+
+    [Datasets.tke_dissipation_rate_beam2.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.tke_dissipation_rate_beam2.Metadata]
+
+[Datasets.boat_gps_L0]
+Parents = []
+DataPath = "data/default_data.csv"
+LastModified = 2026-08-07T16:57:40.065Z
+SourcePath = "scripts/generate_default_data.jl"
+Registered = 2026-08-07T16:57:40.065Z
+ID = "boat_gps_L0"
+Title = "Default Title"
+Description = "Default description."
+ProcessingLevel = "L1"
+
+    [Datasets.boat_gps_L0.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.boat_gps_L0.Metadata]
+
+[Datasets.boat_ctd_raw]
+Parents = []
+DataPath = "data/default_data.csv"
+LastModified = 2026-08-07T16:42:14.350Z
+SourcePath = "scripts/generate_default_data.jl"
+Registered = 2026-08-07T16:42:14.350Z
+ID = "boat_ctd_raw"
+Title = "Default Title"
+Description = "Default description."
+ProcessingLevel = "L1"
+
+    [Datasets.boat_ctd_raw.Authors."Sam Aucoin"]
+    Email = "sam.aucoin@dal.ca"
+    Affiliation = "Department of Oceanography, Dalhousie University"
+    ORCID = "https://orcid.org/0009-0009-6772-3418"
+    Name = "Sam Aucoin"
+    Github = "https://github.com/s-aucoin"
+
+    [Datasets.boat_ctd_raw.Metadata]

@@ -9,16 +9,24 @@ projects = ["docs"]
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 DocumenterTools = "35a29f4d-8980-5a13-9543-d66fff28ecb8"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
 REPL = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
+Serialization = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
+Transformers = "21ca0261-441d-5938-ace7-c90938fde4d4"
 
 [compat]
 Dates = "1.11.0, 1.10"
 DocumenterTools = "0.1.21"
+LinearAlgebra = "1.12.0"
 Parameters = "0.13.1"
 REPL = "1.11.0, 1.10"
+Serialization = "1.11.0"
+Statistics = "1.11.5"
 TOML = "1.0.3"
+Transformers = "0.3.1"
 julia = "1.10.10 - 1.13"
 
 [extras]
