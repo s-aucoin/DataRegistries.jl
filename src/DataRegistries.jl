@@ -10,6 +10,5 @@ include("RegistryManagement.jl")
 include("Conversions.jl")
 include("IO.jl")
 include("RegistryQueries.jl")
-include("SemanticSearch/SemanticSearch.jl")
 
 end
