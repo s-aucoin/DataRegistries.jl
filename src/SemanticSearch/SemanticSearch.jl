@@ -7,7 +7,7 @@ struct SemanticIndex
 end
 
 
-function DatasetText(dataset::Dataset; included_fields=[:ID, :Title, :Description, :Authors, :ProcessingLevel, :Parents, :Registered, :LastModified, :Metadata])
+function DatasetText(dataset::DataRegistries.Dataset; included_fields=[:ID, :Title, :Description, :Authors, :ProcessingLevel, :Parents, :Registered, :LastModified, :Metadata])
     lines = []
 
     for field in included_fields
@@ -39,10 +39,10 @@ function DatasetText(dataset::Dataset; included_fields=[:ID, :Title, :Descriptio
 end
 
 
-function SemanticSearch(index::DataRegistries.SemanticIndex, query::AbstractString; k::Integer = 10, embedder=DataRegistries.LocalBERT())
+function SemanticSearch(index::DataRegistriesSemanticSearchExt.SemanticIndex, query::AbstractString; k::Integer = 10, embedder=DataRegistriesSemanticSearchExt.LocalBERT())
     k > 0 || throw(ArgumentError("k must be positive"))
 
-    q = DataRegistries.unit_embedding(embedder(query))
+    q = DataRegistriesSemanticSearchExt.unit_embedding(embedder(query))
 
     length(q) == size(index.vectors, 1) || throw(DimensionMismatch("Query and index embedding dimensions differ"))
 
@@ -55,5 +55,3 @@ end
 
 
 ###########################
-include("Embedding.jl")
-include("SemanticIndex.jl")

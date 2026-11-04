@@ -14,7 +14,7 @@ function unit_embedding(v)
 end
 
 
-function BuildSemanticIndex(datasets::Dict{String, Dataset}; embedder=DataRegistries.LocalBERT())
+function BuildSemanticIndex(datasets::Dict{String, DataRegistries.Dataset}; embedder=DataRegistriesSemanticSearchExt.LocalBERT())
     entries = collect(pairs(datasets))
 
     isempty(entries) && throw(ArgumentError("Cannot index an empty registry"))
@@ -24,10 +24,10 @@ function BuildSemanticIndex(datasets::Dict{String, Dataset}; embedder=DataRegist
     texts = [DatasetText(last(entries[i])) for i in eachindex(entries)]
 
     vectors = hcat(
-        (DataRegistries.unit_embedding(embedder(text)) for text in texts)...
+        (DataRegistriesSemanticSearchExt.unit_embedding(embedder(text)) for text in texts)...
     )
 
-    return DataRegistries.SemanticIndex(ids, texts, vectors)
+    return DataRegistriesSemanticSearchExt.SemanticIndex(ids, texts, vectors)
 end
 
 
